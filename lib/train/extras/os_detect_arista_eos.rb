@@ -11,7 +11,6 @@ module Train::Extras
       if unix_file?('/usr/bin/FastCli')
         output = @backend.run_command('FastCli -p 15 -c "show version | json"').stdout
         @platform[:name] = 'arista_eos_bash'
-        family = 'fedora'
       else
         output = @backend.run_command('show version | json').stdout
       end
@@ -19,8 +18,7 @@ module Train::Extras
       unless output.empty?
         eos_ver = JSON.parse(output)
         @platform[:name] = @platform[:name] || 'arista_eos'
-        family ||= 'arista_eos'
-        @platform[:family] = family
+        @platform[:family] = 'arista_eos'
         @platform[:release] = eos_ver['version']
         @platform[:arch] = eos_ver['architecture']
         true
